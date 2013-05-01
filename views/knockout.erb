@@ -1,0 +1,66 @@
+<!DOCTYPE html >
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ToDo</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="container">
+    <section id="taskforms" class="clearfix">
+      <div id="newtaskform" class="floatleft fifty">
+        <h2>Create a New Task</h2>
+        <form id="addtask" data-bind="submit: addTask">
+          <input data-bind="value: newTaskDesc">
+          <input type="submit">
+        </form>
+      </div>
+
+      <div id="tasksearchform" class="floatright fifty">
+        <h2>Search Tasks</h2>
+        <form id="searchtask">
+          <input data-bind="value: query, valueUpdate: 'keyup', event : { keyup : search}">
+        </form>
+      </div>
+    </section>
+    <section id="tasktable" style="clear: both">
+      <p class="floatleft fifty">Incomplete Tasks remaining: <span data-bind="text: incompleteTasks().length"></span></p>
+      <p class="floatright fifty"><a href="#" data-bind="click: removeAllComplete, visible: completeTasks().length > 0">Delete All Complete Tasks</a></p>
+      <table>
+        <thead>
+        <tr>
+          <th data-bind="click: function(){ sort('description') }">Description</th>
+          <th data-bind="click: function(){ sort('created_at') }">Date Added</th>
+          <th data-bind="click: function(){ sort('updated_at') }">Date Modified</th>
+          <th data-bind="click: function(){ sort('complete') }">Complete?</th>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: tasks">
+        <tr data-bind="css: { 'complete': complete }, visible: isvisible">
+          <td>
+            <div class="item-description" data-bind="visible: !editing()">
+              <a href="#" data-bind="text: description, click: $parent.editItem"></a>
+            </div>
+            <div class="item-description" data-bind="visible: editing">
+              <input type="text" data-bind="value: description, selectAndFocus: editing, enterKey: $parent.stopEditing, event: { blur: $parent.stopEditing }">
+            </div>
+          </td>
+          <td data-bind="text: $parent.formatDate(created_at())"></td>
+          <td data-bind="text: $parent.formatDate(updated_at())"></td>
+          <td><input type="checkbox" data-bind="checked: complete, click: $parent.toggleComplete"></td>
+          <td data-bind="click: $parent.destroyTask" class="destroytask"><a>X</a></td>
+        </tr>
+        </tbody>
+        </table>
+    </section>
+  </div>
+
+  <script src="/jquery-2.0.0.min.js"></script>
+  <script src="/knockout-2.2.1.js"></script>
+  <script src="/app-knockout.js"></script>
+</body>
+</html>

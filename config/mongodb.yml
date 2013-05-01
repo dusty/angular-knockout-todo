@@ -1,0 +1,4 @@
+development:
+  sessions:
+    default:
+      uri:  <%= ENV['MONGOLAB_URI'] || 'mongodb://localhost:27017/demo1' %>
