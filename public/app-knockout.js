@@ -30,6 +30,7 @@ ko.bindingHandlers.selectAndFocus = {
     ko.bindingHandlers.hasfocus.init(element, valueAccessor, allBindingsAccessor);
     ko.utils.registerEventHandler(element, 'focus', function () {
       element.focus();
+      element.select();
     });
   },
   update: function (element, valueAccessor) {

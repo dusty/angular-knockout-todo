@@ -1,5 +1,28 @@
-angular.module('app', ['ngResource']).factory('Task', function($resource) {
+var taskapp = angular.module('taskapp', ['ngResource']).factory('Task', function($resource) {
   return $resource('/tasks/:_id', {_id: '@_id'}, { update: { method: 'PUT' } } )
+});
+
+// taken from
+// http://todomvc.com/architecture-examples/angularjs
+taskapp.directive('todoFocus', function todoFocus($timeout) {
+  return function (scope, elem, attrs) {
+    scope.$watch(attrs.todoFocus, function (newVal) {
+      if (newVal) {
+        $timeout(function () {
+          elem[0].focus();
+          elem[0].select();
+        }, 0, false);
+      }
+    });
+  };
+});
+
+taskapp.directive('todoBlur', function () {
+  return function (scope, elem, attrs) {
+    elem.bind('blur', function () {
+      scope.$apply(attrs.todoBlur);
+    });
+  };
 });
 
 function TodoController($scope, Task, $filter) {
